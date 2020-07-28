@@ -1,0 +1,90 @@
+VS2005
+ 升级到SP1：安装VS80sp1-KB926604-X86-CHS.exe
+ 安装Platformbuild插件：Windows Embedded CE 6.0.msi(默认选择ARMV4I)
+ 安装PlatformBuild升级包：Windows Embedded CE 6.0 Platform Builder Service Pack 1.msi
+			  Windows Embedded CE 6.0 R2.msi(Voice over IP不用选择)
+             CE6R3目录下：Windows Embedded CE 6.0 R3.msi
+
+WinCE环境的配置
+ 安装 WinCEPB60-081231-Product-Update-Rollup-Armv4I.msi(全部)(会出错)
+ 安装09年的补丁：WinCEPB60-090131-2009M01-Armv4I.msi,一直安装到M08
+
+组件
+ Blend组件的安装：Blend_Trial_en.exe
+ Word PDF View组件：WesttekFileViewers6.exe(完全安装)
+ QQ组件：QQ\QQ2008.msi
+
+BSP的使用  (不需要搞)
+X:\WINCE600\PLATFORM\
+ platform\SMDK6410.rar 解压到 上面的目录(解压后生成SMDK6410目录)
+ 更多细节参见Real6410 WinCE用户手册V1.5.pdf P35
+
+建立工程项目、生成镜像文件类型选择等等
+具体见pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

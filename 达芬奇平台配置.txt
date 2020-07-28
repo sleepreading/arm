@@ -1,0 +1,77 @@
+root登录：
+
+一 
+1  目标板环境安装 /opt
+mvl_setuplinux –console
+mvl_target –console
+mvl_lsp -console
+cd /opt/mv_pro_4.0
+tar zxf mvltools4.0
+tar zxf mvl4.0-target
+tar zxf DaVinciLSP
+
+2  dvevm安装 /opt
+①dvevm_setuplinux_1_20_00_10.bin –console
+②将文件rootfs_davinci.tar.bz2解压到/home目录,之后对以下目录的内容作替换：
+opt/dvevm;dvs/demos;dvs/webdocs(替换文件安装资料里有，这几个目录都在刚刚解压生成的davinci目录下)
+demos替换可能没有目录请新建，在把dvs下相同于demos内的东西(encode,video_copy.x64p)删掉。
+③mkdir ~/davinci/filesys 并进入
+④sudo cp -a /opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/target/* .
+(其实③④可以不要，target里面的文件作用和rootfs解压后生成的davinci目录里的文件作用是一样的，只是后者跟你使用的达芬奇目标板匹配而已)
+⑤配置Linux网络IP 192.168.10.2
+⑥编辑exports,将davinci目录加入其中，*号表示所有主机可访问 
+⑦chown -R 777 /home/davinci
+⑧利用超级终端于开发板通信，超级终端配置如下：
+setenv bootargs mem=60M console=ttyS0,57600n8 root=/dev/nfs rootfstype=nfs nfsroot=192.168.10.2:/home/davinci nfsaddrs=192.168.10.107:192.168.10.2:192.168.10.1:255.255.255.0:davinci:eth0:none video=dm64xxfb:output=pal
+保存并启动开发板：saveenv；boot
+⑨终端中执行演示程序
+./encode_qcif & 回车
+./rtpserver &
+于宿主机上(安装了Linux的现实计算机)打开浏览器输入开发办的IP，已进入开发板系统
+进入页面后需要安装，CamView。
+用户名admin，密码123456，登录后会显示视频画面
+
+3  SDK安装  /opt/dvevm_1_20
+①$host:./dvsdk_setuplinux_1_20_00_10.bin -console
+②$host:./dsp_bios_setuplinux_5_31_01_07.bin -console
+安装时重新设置路径为 /opt/dvevm_1_20
+③$host:./cg_setuplinux_6_0_14.bin
+安装时重新设置路径为 /opt/dvevm_1_20
+
+三 编译
+1  .bashrc修改
+①vi ~/.bashrc 增加一行
+PATH=/opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/bin:/opt/mv_pro_4.0/montavista/pro/bin:/opt/mv_pro_4.0/montavista/common/bin:$PATH
+②这个时候已经可以用<arm_v5t_le-gcc>来编译C文件了，不妨试一下
+
+2  xdcpaths.mak修改
+①配置正确路径；
+
+3  user.bld修改
+①配置正确路径。
+②编译：gmale clean; gmake; 顺序：codec，server，app。
+其中app会报错可忽略，因为没有连接开发板
+
+4  Rules.make修改
+①EXEC_DIR=/home/davinci
+②LINUXKERNEL_INSTALL_DIR=/opt/mv_pro_4.0/montavista/pro/devkit/lsp/ti-davinci
+保存，编译：make clear; make; make install。
+③其他路径的修改
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

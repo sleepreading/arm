@@ -1,0 +1,74 @@
+驱动中需要修改的文件主要有：sensorformat.h, s3c6410_camera.h , MfcConfig.h
+
+sensorformat.h:	这部分与 camera_pdd.cpp(不用修改) 相对应
+
+//表示修改掉的部分： 
+//MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_0, 160, 120, 16, 30); 	对应于 PREVIEW
+
+MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_0, 800, 480, 16, 30); 
+
+MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_1, 176, 144, 16, 30); 
+
+MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_2, 320, 240, 16, 15); 
+
+MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_3, 640, 480, 16, 15); 
+
+//MAKE_STREAM_MODE_YV12(DCAM_StreamMode_5, 176, -144, 12, 15); 		对应于 CAPTURE
+
+MAKE_STREAM_MODE_YV12(DCAM_StreamMode_5, 800, -480, 12, 15);
+
+MAKE_STREAM_MODE_YV12(DCAM_StreamMode_6, 320, -240, 12, 15); 
+
+MAKE_STREAM_MODE_YV12(DCAM_StreamMode_7, 176, -144, 12, 15); 
+
+
+
+s3c6410_camera.h: 修改预览缓存的大小
+
+#define PREVIEW_BUFFER_SIZE      3072000   // 800*480*2*4 
+                                            //614400==( 320*240*2  )  * MAX_HW_FRAMES ,原始值
+
+其中，10485760 为预览1280*1024 像素图像的缓存大小，2457600 为预览640*480 图像的缓存大小，可根据自己需要的像素大小设置。 
+
+
+MfcConfig.h	此文件配置了 MFC 工作中所用到的buffer,主要是 stream buffer 与 frame buffer的配置,一般不用修改
+		具体改动请参见MFC的UserManual
+
+
+
+
+
+具体修改见下:
+<路径>
+→ <改动文件>
+<改动值>
+
+
+X:\WINCE600\PLATFORM\SMDK6410\SRC\DRIVERS\Camera\CAMERA_PDD
+→	sensorformats.h
+	MAKE_STREAM_MODE_RGB565(DCAM_StreamMode_0, 800, 480, 16, 1);
+
+
+X:\WINCE600\PLATFORM\SMDK6410\SRC\DRIVERS\Camera\S3C6410_camera
+→	s3c6410_camera.h
+	#define PREVIEW_BUFFER_SIZE 3072000		  // 3072000=800*480*2*4
+
+
+X:\WINCE600\PLATFORM\SMDK6410\SRC\DRIVERS\Mfc\mfc_os_indep_layer
+→	MfcConfig.h
+	#define MFC_NUM_INSTANCES_MAX    4 
+	#define MFC_FRAM_BUF_SIZE	(800*480*3*4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

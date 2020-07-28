@@ -1,0 +1,80 @@
+// 安装位置建议选择 /opt
+
+1 montavista 安装
+./mvl_target_setuplinux_1_20_00_10.bin -console
+./mvl_setuplinux_1_20_00_10.bin -console
+tar zxf DaVinciLSP-REL_mvl40li.tar.gz
+
+2 dvevm 安装
+./dvevm_setuplinux_1_20_00_10.bin –console
+
+3 dvevm 配置
+<1> 导出共享文件系统方便目标板访问
+cd ~
+mkdir -p davinci/fs
+cd davinci/fs
+sudo cp -a /opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/target/* .
+sudo chown -R leizi:leizi opt
+<2> 加入环境变量
+在 ~/.bashrc 中加入:
+PATH=/opt/mv_pro_4.0/montavista/pro/devkit/arm/v5t_le/bin:/opt/mv_pro_4.0/montavista/pro/bin:/opt/mv_pro_4.0/montavista/common/bin:$PATH
+使用 arm_v5t_le-gcc 测试环境变量是否设置正确
+
+4 超级终端的设置
+setenv bootargs mem=60M console=ttyS0,115200n8 root=/dev/nfs rootfstype=nfs nfsroot=192.168.10.2:/home/davinci nfsaddrs=192.168.10.3:192.168.10.2:192.168.10.1:255.255.255.0:davinci:eth0:none video=dm64xxfb:output=pal
+saveenv
+boot
+
+// codec engine 编译
+1 xdcpaths.mak 修改
+用安装包里的 xdcpaths.mak 替换 codec_engine_1_10_01\examples 下的 xdcpaths.mak
+并配置正确的路径
+
+2 user.bld 修改
+配置目标板编译环境的正确路径
+
+3 编译,顺序: code -> server -> app
+gmake clean 
+gmake
+
+// demos 编译
+修改 Rules.make 配置正确路径并修改下述:
+EXEC_DIR=/home/jdvideo/davinci/filesys/opt/dvevm
+LINUXKERNEL_INSTALL_DIR=/opt/mv_pro_4.0/montavista/pro/devkit/lsp/ti-davinci
+保存,编译：
+make clear; make; make install
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
